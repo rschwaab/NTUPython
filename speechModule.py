@@ -6,10 +6,22 @@ class SpeechModule:
         self.microphone = sr.Microphone()
 
     def listen_and_recognize(self):
-        with self.microphone as source:
-            print("Listening...")
-            audio = self.recognizer.listen(source)
-        
+        print("Listening... Press Enter to stop.")
+        audio_data = []
+
+        def callback(recognizer, audio):
+            audio_data.append(audio)
+
+        stop_listening = self.recognizer.listen_in_background(self.microphone, callback)
+
+        input()  # Wait for the user to press Enter
+        stop_listening(wait_for_stop=False)
+
+        if not audio_data:
+            return "No audio data captured"
+
+        audio = sr.AudioData(b''.join([a.get_raw_data() for a in audio_data]), audio_data[0].sample_rate, audio_data[0].sample_width)
+
         try:
             print("Recognizing...")
             text = self.recognizer.recognize_google(audio)
