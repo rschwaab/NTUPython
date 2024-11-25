@@ -4,6 +4,7 @@ import google.generativeai as genai
 
 load_dotenv()
 
+# Get your own API key from https://aistudio.google.com/app/apikey
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -31,5 +32,5 @@ class LLMModule:
 
 if __name__ == "__main__":
     example = LLMModule()
-    response = example.get_recipe_suggestions("I have apples, flour, eggs adn sugar.")
+    response = example.get_recipe_suggestions("I have apples, flour, eggs and sugar.")
     print(response)
