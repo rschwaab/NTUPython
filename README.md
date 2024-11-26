@@ -53,7 +53,7 @@ In the end, we will have a simple UI using Python to display this for the user.
 # To run
 First you need to add a file called .env and in the file add:
 `GEMINI_API_KEY=xxx`
-instead of xxx create a API key from here https://aistudio.google.com/app/apikeyand and insert it. 
+instead of xxx create a API key from here https://aistudio.google.com/app/apikey and insert it. 
 
 Furtemore you will get errors for not having isntalled modules on your computer.
 For instance you will need run the two following commands in the terminal of the project.
