@@ -1,3 +1,5 @@
+# The application overview
+
 ## LLM Module
 
 The LLM module is responsible for:
@@ -47,3 +49,18 @@ In the end, we will have a simple UI using Python to display this for the user.
 ## Sequence Diagram
 
 ![Sequence Diagram](seqDiagram.png)
+
+# To run
+First you need to add a file called .env and in the file add:
+`GEMINI_API_KEY=xxx`
+instead of xxx create a API key from here https://aistudio.google.com/app/apikeyand and insert it. 
+
+Furtemore you will get errors for not having isntalled modules on your computer.
+For instance you will need run the two following commands in the terminal of the project.
+- pip install google-generativeai
+- pip install python-dotenv
+You actually might need to install pip as well, not sure. But google this!
+
+Then finaly, to run the application write the following command in the terminal:
+`python3 main.py`
+which will execute the main method
