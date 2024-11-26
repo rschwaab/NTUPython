@@ -1,5 +1,6 @@
 from speechModule import SpeechModule
 from llmModule import LLMModule
+import json
 
 def main():
     speech_module = SpeechModule()
@@ -8,7 +9,7 @@ def main():
     
     llm_module = LLMModule()
     recipes = llm_module.get_recipe_suggestions(result)
-    print("Recipes: ", recipes)
+    print("Recipes: ", json.dumps(recipes, indent=4))
 
 if __name__ == "__main__":
     main()

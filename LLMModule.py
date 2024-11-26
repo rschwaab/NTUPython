@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+import json
 
 load_dotenv()
 
@@ -15,17 +16,29 @@ class LLMModule:
 
         # Define the prompt to send to the API
         prompt = f"""You are an agent for an app that takes input from users that want to get recipes based on the food they have left in their fridge. This is the voice input from the user: "{input_text}"
-        Provide recipes for these ingredients in the following JSON format:
-        [{{"recipeTitle": "...", "recipeSteps": "..."}}]
+        ### Instructions:
+        - Only return a JSON array of recipes.
+        - Do not include any text, explanations, or markdown formatting.
+        - The JSON array must follow this structure exactly:
+        [
+        {{
+            "recipeTitle": "<title>",
+            "recipeDescription": "<description>",
+            "recipeSteps": "<steps>"
+        }}
+        ]
         """
 
         # Send the request to the Gemini API
         try:
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(prompt)
-            print(response.text)
-            recipes = response.json()
+            response_text = response.text.strip()
+            if response_text.startswith("```json") and response_text.endswith("```"):
+                response_text = response_text[7:-3].strip()  # Remove ```json and ```
 
+            # Parse the response as JSON directly
+            recipes = json.loads(response_text)
             return recipes
         except:
             return 0
