@@ -19,12 +19,14 @@ class LLMModule:
         ### Instructions:
         - Only return a JSON array of recipes.
         - Do not include any text, explanations, or markdown formatting.
+        - Always return three recepies.
         - The JSON array must follow this structure exactly:
         [
         {{
             "recipeTitle": "<title>",
             "recipeDescription": "<description>",
-            "recipeSteps": "<steps>"
+            "recipeSteps": "<steps>",
+            "timeEstimate": "<time>",
         }}
         ]
         """
