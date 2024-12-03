@@ -54,6 +54,8 @@ class SpeechModule:
             return "Google Speech Recognition could not understand audio"
         except sr.RequestError as e:
             return f"Could not request results from Google Speech Recognition service; {e}"
+        except Exception as e:
+            return f"An unexcepted error occured: {e}"
 
 
 # Example usage
