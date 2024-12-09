@@ -46,10 +46,6 @@ The LLM module is responsible for:
 
 In the end, we will have a simple UI using Python to display this for the user.
 
-## Sequence Diagram
-
-![Sequence Diagram](seqDiagram.png)
-
 # To run
 First you need to add a file called .env and in the file add:
 `GEMINI_API_KEY=xxx`
@@ -64,3 +60,30 @@ You actually might need to install pip as well, not sure. But google this!
 Then finaly, to run the application write the following command in the terminal:
 `python3 main.py`
 which will execute the main method
+
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant MainModule
+    participant SpeechModule
+    participant GoogleSpeechAPI
+    participant LLMModule
+    participant GoogleGeminiLLM
+    participant ImageGenerator
+
+    User ->> MainModule: Start application
+    MainModule ->> SpeechModule: Initialize
+    SpeechModule ->> User: Prompt for speech input
+    User ->> SpeechModule: Speak
+    SpeechModule ->> GoogleSpeechAPI: Send audio data
+    GoogleSpeechAPI ->> SpeechModule: Return transcribed text
+    SpeechModule ->> LLMModule: Send transcribed text
+    LLMModule ->> GoogleGeminiLLM: Send list of ingredients
+    GoogleGeminiLLM ->> LLMModule: Return recipe in JSON format
+    LLMModule ->> ImageGenerator: Request picture of dishes
+    ImageGenerator ->> LLMModule: Return pictures of dishes
+    LLMModule ->> MainModule: Send JSON data (inlcluding picture)
+    MainModule ->> User: Display results to user
+```
