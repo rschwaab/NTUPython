@@ -6,16 +6,26 @@ import threading
 class SpeechModule:
     def __init__(self, filename="recordedAudio.wav"):
         self.recognizer = sr.Recognizer()
-        self.filename = filename  # File to save the recorded audio
+        self.filename = filename
+        self.recording = False
+        self._record_thread = None
+
+    def start_recording(self):
+        """Start recording audio in a background thread."""
+        if self.recording:
+            return  # Already recording
         self.recording = True
+        self._record_thread = threading.Thread(target=self._record_audio, daemon=True)
+        self._record_thread.start()
 
-    def listen_and_recognize(self):
-        """Records audio until Enter is pressed and transcribes it."""
-        self.record_audio()  # Record audio
-        return self.recognize_audio()  # Transcribe the recorded audio
+    def stop_recording(self):
+        """Stop the recording."""
+        self.recording = False
+        if self._record_thread is not None:
+            self._record_thread.join()
+            self._record_thread = None
 
-    def record_audio(self):
-        """Records audio from the microphone and saves it as a WAV file."""
+    def _record_audio(self):
         RATE, CHUNK, FORMAT, CHANNELS = 16000, 1024, pyaudio.paInt16, 1
         audio = pyaudio.PyAudio()
         stream = audio.open(
@@ -23,14 +33,9 @@ class SpeechModule:
         )
         frames = []
 
-        def stop_recording():
-            input("Press Enter to stop recording...")
-            self.recording = False
-
-        threading.Thread(target=stop_recording, daemon=True).start() # Needed to in order to wait for user to press enter.
-
         while self.recording:
-            frames.append(stream.read(CHUNK))
+            data = stream.read(CHUNK)
+            frames.append(data)
 
         stream.stop_stream()
         stream.close()
@@ -44,21 +49,15 @@ class SpeechModule:
         print(f"Audio recorded and saved to {self.filename}")
 
     def recognize_audio(self):
-        """Transcribes the saved WAV file using Google Speech Recognition."""
+        """Transcribe the saved WAV file using Google Speech Recognition."""
         try:
             with sr.AudioFile(self.filename) as source:
                 print("Processing audio...")
-                audio = self.recognizer.record(source)
-            return self.recognizer.recognize_google(audio)
+                audio_data = self.recognizer.record(source)
+            return self.recognizer.recognize_google(audio_data)
         except sr.UnknownValueError:
             return "Google Speech Recognition could not understand audio"
         except sr.RequestError as e:
             return f"Could not request results from Google Speech Recognition service; {e}"
         except Exception as e:
-            return f"An unexcepted error occured: {e}"
-
-
-# Example usage
-if __name__ == "__main__":
-    speech_module = SpeechModule()
-    print(speech_module.listen_and_recognize())
+            return f"An unexpected error occurred: {e}"
