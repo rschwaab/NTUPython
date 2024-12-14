@@ -69,15 +69,3 @@ class PictureModule:
 
         return recipes_with_pictures
 
-
-# for recipe in recipes_with_pictures:
-#     if recipe.get("picture"):
-#         try:
-#             # Open the image using Pillow
-#             image = Image.open(recipe["picture"])
-#             # Display the image
-#             image.show()
-#         except Exception as e:
-#             print(f"Error opening image {image}: {e}")
-#     else:
-#         print(f"Image for {recipe} does not exist.")
