@@ -68,7 +68,7 @@ sequenceDiagram
     participant User
     participant MainModule
     participant SpeechModule
-    participant GoogleSpeechAPI
+    participant SpeechToTextLibrary
     participant LLMModule
     participant GoogleGeminiLLM
     participant ImageGenerator
@@ -77,8 +77,8 @@ sequenceDiagram
     MainModule ->> SpeechModule: Initialize
     SpeechModule ->> User: Prompt for speech input
     User ->> SpeechModule: Speak
-    SpeechModule ->> GoogleSpeechAPI: Send audio data
-    GoogleSpeechAPI ->> SpeechModule: Return transcribed text
+    SpeechModule ->> SpeechToTextLibrary: Send audio data
+    SpeechToTextLibrary ->> SpeechModule: Return transcribed text
     SpeechModule ->> LLMModule: Send transcribed text
     LLMModule ->> GoogleGeminiLLM: Send list of ingredients
     GoogleGeminiLLM ->> LLMModule: Return recipe in JSON format
