@@ -66,24 +66,19 @@ which will execute the main method
 ```mermaid
 sequenceDiagram
     participant User
-    participant MainModule
+    participant UiModule
     participant SpeechModule
-    participant SpeechToTextLibrary
     participant LLMModule
-    participant GoogleGeminiLLM
     participant ImageGenerator
 
-    User ->> MainModule: Start application
-    MainModule ->> SpeechModule: Initialize
+    User ->> UiModule: Start application
+    UiModule ->> SpeechModule: Initialize
     SpeechModule ->> User: Prompt for speech input
     User ->> SpeechModule: Speak
-    SpeechModule ->> SpeechToTextLibrary: Send audio data
-    SpeechToTextLibrary ->> SpeechModule: Return transcribed text
-    SpeechModule ->> LLMModule: Send transcribed text
-    LLMModule ->> GoogleGeminiLLM: Send list of ingredients
-    GoogleGeminiLLM ->> LLMModule: Return recipe in JSON format
-    LLMModule ->> ImageGenerator: Request picture of dishes
-    ImageGenerator ->> LLMModule: Return pictures of dishes
-    LLMModule ->> MainModule: Send JSON data (inlcluding picture)
-    MainModule ->> User: Display results to user
+    SpeechModule ->> UiModule: Return transcribed text
+    UiModule ->> LLMModule: Transcribed text
+    LLMModule ->> UiModule: JSON
+    UiModule ->> ImageGenerator: Dictionary with dishes
+    ImageGenerator ->> UiModule: Return dictionary with the pictures
+    UiModule ->> User: Display results to user
 ```
